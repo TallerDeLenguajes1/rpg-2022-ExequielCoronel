@@ -5,48 +5,50 @@ using System.Threading.Tasks;
 
 namespace RPG
 {
+    public enum Tipo
+    {
+        cazador = 0,
+        hechizero = 1,
+        titan = 2
+    }
     public class Datos
     {
-        private string tipo;
+    
+        private DateTime FechaPelea = new DateTime(980,03,21);
+        private Tipo tipo; 
         private string nombre;
         private string apodo;
+        private int salud;
         private DateTime fechaDeNacimiento;
-        private int salud;//=100
 
-        public string tipo
-        {
-            get;
-            set;
-        }
+        public Tipo Tipo { get => tipo; set => tipo = value; }
+        public string Nombre { get => nombre; set => nombre = value; }
+        public string Apodo { get => apodo; set => apodo = value; }
+        public int Salud { get => salud; set => salud = value; }
+        public DateTime FechaDeNacimiento { get => fechaDeNacimiento; set => fechaDeNacimiento = value; }
+        public DateTime FechaPelea1 { get => FechaPelea; private set => FechaPelea = value; }
 
-        public string nombre
+        public Datos()
         {
-            get;
-            set;
+            Tipo = Tipo;
+            nombre = "";
+            apodo = "";
+            salud = 0;
+            fechaDeNacimiento = new DateTime();
         }
-
-        public string apodo
+        public int edad()
         {
-            get;
-            set;
+            int add = 0;
+            if(fechaDeNacimiento.Year < FechaPelea.Year && fechaDeNacimiento.Month < FechaPelea.Month)
+            {
+                add=1;
+            } else {
+                if(fechaDeNacimiento.Month==FechaPelea.Month && fechaDeNacimiento.Day < FechaPelea.Day)
+                {
+                    add=1;
+                }
+            }
+            return (FechaPelea.Year-fechaDeNacimiento.Year)+add;
         }
-
-        public DateTime fechaDeNacimiento
-        {
-            get;
-            set;
-        }
-
-        public int salud 
-        {
-            get;
-            set;
-        }
-
-        int edad()
-        {
-            return (fechaDeNacimiento);
-        }
-        
     }
 }

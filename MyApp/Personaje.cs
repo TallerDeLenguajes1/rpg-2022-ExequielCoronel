@@ -18,6 +18,11 @@ namespace RPG
             datos = new Datos();
             caracteristicas = new Caracteristicas();
         }
+
+        public void restaurarSalud()
+        {
+            datos.Salud=1000;
+        }
         public void CrearPjAleatorio()
         {
             int selector;
@@ -34,24 +39,42 @@ namespace RPG
             {
                 case 1:
                     Datos.Tipo=Tipo.cazador;
-                    Caracteristicas.Fuerza = rnd.Next(20,50);
-                    Caracteristicas.Armadura = rnd.Next(30,70);
-                    Caracteristicas.Destreza = rnd.Next(55,80);
-                    Caracteristicas.Velocidad = 300 - (Caracteristicas.Fuerza+Caracteristicas.Armadura+caracteristicas.Destreza);
+                    Caracteristicas.Fuerza = rnd.Next(2,5);
+                    Caracteristicas.Armadura = rnd.Next(3,7);
+                    Caracteristicas.Destreza = rnd.Next(5,8);
+                    Caracteristicas.Velocidad = 30 - (Caracteristicas.Fuerza+Caracteristicas.Armadura+caracteristicas.Destreza);
+                    if(Caracteristicas.Velocidad>10)
+                    {
+                        Caracteristicas.Nivel = rnd.Next(1,51);
+                    } else {
+                        Caracteristicas.Nivel = rnd.Next(20,101);
+                    }
                     break;
                 case 2:
                     Datos.Tipo=Tipo.hechizero;
-                    Caracteristicas.Armadura = rnd.Next(30,80);
-                    Caracteristicas.Fuerza = rnd.Next(30,80);
-                    Caracteristicas.Velocidad = rnd.Next(30,80);
-                    Caracteristicas.Destreza = 300 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Fuerza);
+                    Caracteristicas.Armadura = rnd.Next(3,8);
+                    Caracteristicas.Fuerza = rnd.Next(3,8);
+                    Caracteristicas.Velocidad = rnd.Next(3,8);
+                    Caracteristicas.Destreza = 30 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Fuerza);
+                    if(Caracteristicas.Destreza>10)
+                    {
+                        Caracteristicas.Nivel = rnd.Next(1,5);
+                    } else {
+                        Caracteristicas.Nivel = rnd.Next(2,10);
+                    }
                     break;
                 case 3:
                     Datos.Tipo=Tipo.titan;
-                    Caracteristicas.Destreza = rnd.Next(10,50);
-                    Caracteristicas.Velocidad = rnd.Next(5,55);
-                    Caracteristicas.Armadura = rnd.Next(75,90);
-                    Caracteristicas.Fuerza = 300 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Destreza);
+                    Caracteristicas.Destreza = rnd.Next(1,5);
+                    Caracteristicas.Velocidad = rnd.Next(5,5);
+                    Caracteristicas.Armadura = rnd.Next(3,9);
+                    Caracteristicas.Fuerza = 30 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Destreza);
+                    if(Caracteristicas.Fuerza>10)
+                    {
+                        Caracteristicas.Nivel = rnd.Next(1,5);
+                    } else {
+                        Caracteristicas.Nivel = rnd.Next(2,10);
+                    }
                     break;
                 default:
                     break;

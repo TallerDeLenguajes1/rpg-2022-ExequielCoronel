@@ -21,7 +21,7 @@ namespace RPG
 
         public void restaurarSalud()
         {
-            datos.Salud=1000;
+            datos.Salud=5000;
         }
         public void CrearPjAleatorio()
         {
@@ -32,7 +32,7 @@ namespace RPG
             Random rnd = new Random();
             Datos.Nombre = N[rnd.Next(0,N.Count())] + " " + A[rnd.Next(0,A.Count())];
             Datos.Apodo = apodo[rnd.Next(0,apodo.Count())];
-            Datos.Salud=100;
+            Datos.Salud=5000;
             Datos.FechaDeNacimiento = new DateTime(rnd.Next(Datos.FechaPelea1.Year-299,Datos.FechaPelea1.Year),rnd.Next(1,13),rnd.Next(1,30));
             selector = rnd.Next(1,4);
             switch (selector)

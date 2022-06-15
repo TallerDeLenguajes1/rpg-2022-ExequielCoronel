@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace RPG
 {
@@ -6,23 +9,58 @@ namespace RPG
     {
         static void Main(string[] args)
         {
+            int opcion;
+            string rutaArchivo = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\jugadores", extensionArchivo = ".Json";
             Personaje Ganador = new Personaje();
             List<Personaje> ListaPj = new List<Personaje>();
-            for(int i=0;i<16;i++)
+            do{
+                System.Console.WriteLine($"\n Cargado de personajes: 1-->Automaticamente, 0-->Archivo Json...Su opcion: ");
+                opcion=Convert.ToInt32(Console.ReadLine());
+                if(opcion != 1 && opcion != 0)
+                {
+                    System.Console.WriteLine($"\n Porfavor ingrese una opcion valida! \n");
+                }
+            }while(opcion != 1 && opcion != 0);
+
+            if(opcion == 1)
             {
-                Personaje P = new Personaje();
-                P.CrearPjAleatorio();
-                ListaPj.Add(P);
-            }
+                if(!File.Exists(rutaArchivo+extensionArchivo))
+                {
+                    File.Create(rutaArchivo+extensionArchivo);
+                }
+                for(int i=0;i<16;i++)
+                {
+                    Personaje P = new Personaje();
+                    P.CrearPjAleatorio();
+                    ListaPj.Add(P); 
+                }
+                File.WriteAllText(rutaArchivo+extensionArchivo,JsonSerializer.Serialize(ListaPj));
+                
+            } else if(opcion==0)
+                    {
+                        do
+                        {
+                            System.Console.WriteLine("\nPresione cualquier tecla para comprobar si el archivo Json esta correctamente creado");
+                            Console.ReadLine();
+                            if(!File.Exists(rutaArchivo+extensionArchivo))
+                            {
+                                System.Console.WriteLine($"\nEl archivo con los personajes no esta creado o no se encuentra en la ruta necesaria por favor cree el mismo en {rutaArchivo+extensionArchivo} gracias!\n");
+                            }
+                        }while(!File.Exists(rutaArchivo+extensionArchivo));
+                        string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
+                        ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);     
+                    }
             Ganador=Pelear(ListaPj);
             describirPj(Ganador);
+                
+            
+            
         }
 
         static Personaje Pelear(List<Personaje> L)
         {
-            const int MAXDAÑOPROVOCABLE = 500000;
+            const int MAXDAÑOPROVOCABLE = 50000;
             Personaje P1 = new Personaje();
-            Personaje PjGanador = new Personaje();
             Personaje P2 = new Personaje();
             Random rnd = new Random();
             int poderDisparo, efectividadDisparo, valorAtaque, poderDefensa, dañoProvocado, Ganador;
@@ -38,7 +76,7 @@ namespace RPG
                 P1=L[posicion1];
                 P2=L[posicion2];
                 turno = rnd.Next(1,3);
-                for(int i=0;i<3;i++)
+                for(int i=0;i<6;i++)
                 {
                     if(turno == 1)
                     {
@@ -76,10 +114,6 @@ namespace RPG
                         }
                 if(Ganador == 1)
                 {
-                    if(cantidadPj==2)
-                    {
-                        PjGanador=L[posicion1];
-                    }
                     L[posicion1].Caracteristicas.Nivel+=1;
                     switch(L[posicion1].Datos.Tipo)
                     {
@@ -102,10 +136,6 @@ namespace RPG
                     L[posicion1].restaurarSalud();
                     L.Remove(P2);
                 } else {
-                    if(cantidadPj==2)
-                    {
-                        PjGanador=L[posicion2];
-                    }
                     L[posicion2].Caracteristicas.Nivel+=1;
                     switch(L[posicion2].Datos.Tipo)
                     {
@@ -129,7 +159,7 @@ namespace RPG
                 }
                 cantidadPj--;
             }
-            return PjGanador;
+            return L[0];
         }
 
         static void describirPj(Personaje P)

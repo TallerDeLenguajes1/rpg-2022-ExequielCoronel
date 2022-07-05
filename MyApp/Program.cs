@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.IO;
 
 
 namespace RPG
@@ -9,52 +10,102 @@ namespace RPG
     {
         static void Main(string[] args)
         {
-            int opcion;
-            string rutaArchivo = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\jugadores", extensionArchivo = ".Json";
+            //Declaro variables 
+            int opcion, opcionPrincipal, banderaArchivoGanadoresCreado = 0;
+            string rutaArchivo = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\jugadores", extensionArchivo = ".Json", rutaArchivoGanadores = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\Ganadores.csv";
             Personaje Ganador = new Personaje();
             List<Personaje> ListaPj = new List<Personaje>();
+            //Bucle hasta que se decida salir del juego
             do{
-                System.Console.WriteLine($"\n Cargado de personajes: 1-->Automaticamente, 0-->Archivo Json...Su opcion: ");
-                opcion=Convert.ToInt32(Console.ReadLine());
-                if(opcion != 1 && opcion != 0)
+                System.Console.WriteLine("Seleccione una opción: 1-->Luchar, 2-->Mostar historial de ganadores, 0-->Salir del Juego");
+                opcionPrincipal = Convert.ToInt32(Console.ReadLine());
+                switch (opcionPrincipal) 
                 {
-                    System.Console.WriteLine($"\n Porfavor ingrese una opcion valida! \n");
-                }
-            }while(opcion != 1 && opcion != 0);
+                    //Opcion salir del juego se muestra por pantalla 
+                    case 0:
+                        int confirmar;
+                        do{
+                            System.Console.WriteLine("\nEsta seguro que desea salir del juego? 1-->Si, 0-->No: ");
+                            confirmar = Convert.ToInt32(Console.ReadLine());
+                            if(confirmar==1)
+                            {
+                                System.Console.WriteLine("\nEsperamos que regreses pronto!\n");
+                                opcionPrincipal = 3;
+                            } else if(confirmar!=0)
+                                    {
+                                        System.Console.WriteLine("\nPor favor seleccione una opción valida!\n");
+                                    }
+                        }while(confirmar != 0 && confirmar !=1);
+                        break;
+                    case 1: 
+                        do{
+                            System.Console.WriteLine($"\n Cargado de personajes: 1-->Automaticamente, 0-->Archivo Json...Su opcion: ");
+                            opcion=Convert.ToInt32(Console.ReadLine());
+                            if(opcion != 1 && opcion != 0)
+                            {
+                                System.Console.WriteLine($"\n Porfavor ingrese una opcion valida! \n");
+                            }
+                        }while(opcion != 1 && opcion != 0);
 
-            if(opcion == 1)
-            {
-                if(!File.Exists(rutaArchivo+extensionArchivo))
-                {
-                    File.Create(rutaArchivo+extensionArchivo);
-                }
-                for(int i=0;i<16;i++)
-                {
-                    Personaje P = new Personaje();
-                    P.CrearPjAleatorio();
-                    ListaPj.Add(P); 
-                }
-                File.WriteAllText(rutaArchivo+extensionArchivo,JsonSerializer.Serialize(ListaPj));
-                
-            } else if(opcion==0)
-                    {
-                        do
+                        if(opcion == 1)
                         {
-                            System.Console.WriteLine("\nPresione cualquier tecla para comprobar si el archivo Json esta correctamente creado");
-                            Console.ReadLine();
                             if(!File.Exists(rutaArchivo+extensionArchivo))
                             {
-                                System.Console.WriteLine($"\nEl archivo con los personajes no esta creado o no se encuentra en la ruta necesaria por favor cree el mismo en {rutaArchivo+extensionArchivo} gracias!\n");
+                                File.Create(rutaArchivo+extensionArchivo);
                             }
-                        }while(!File.Exists(rutaArchivo+extensionArchivo));
-                        string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
-                        ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);     
-                    }
-            Ganador=Pelear(ListaPj);
-            describirPj(Ganador);
-                
-            
-            
+                            for(int i=0;i<16;i++)
+                            {
+                                Personaje P = new Personaje();
+                                P.CrearPjAleatorio();
+                                ListaPj.Add(P); 
+                            }
+                            File.WriteAllText(rutaArchivo+extensionArchivo,JsonSerializer.Serialize(ListaPj));
+
+                        } else if(opcion==0)
+                                {
+                                    do
+                                    {
+                                        System.Console.WriteLine("\nPresione cualquier tecla para comprobar si el archivo Json esta correctamente creado");
+                                        Console.ReadLine();
+                                        if(!File.Exists(rutaArchivo+extensionArchivo))
+                                        {
+                                            System.Console.WriteLine($"\nEl archivo con los personajes no esta creado o no se encuentra en la ruta necesaria por favor cree el mismo en {rutaArchivo+extensionArchivo} gracias!\n");
+                                        }
+                                    }while(!File.Exists(rutaArchivo+extensionArchivo));
+                                    string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
+                                    ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);     
+                                }
+                        Ganador=Pelear(ListaPj);
+                        System.Console.WriteLine("\tGanador del trono de Hierro:\n");
+                        describirPj(Ganador);
+                        if(!File.Exists(rutaArchivoGanadores))
+                        {
+                            banderaArchivoGanadoresCreado = 1;
+                        }
+                        StreamWriter archivoW = File.AppendText(rutaArchivoGanadores);
+                        if(banderaArchivoGanadoresCreado == 1)
+                        {
+                            archivoW.WriteLine($"Nombre;Apodo;Tipo");
+                        }
+                        archivoW.WriteLine($"{Ganador.Datos.Nombre};{Ganador.Datos.Apodo};{Ganador.Datos.Tipo}");
+                        archivoW.Close();
+                        banderaArchivoGanadoresCreado = 0;
+                        break;
+                    case 2:
+                        if(!File.Exists(rutaArchivoGanadores))
+                        {
+                            System.Console.WriteLine("El historial de ganadores esta vacio");
+                        } else {
+                            System.Console.WriteLine("Historial de ganadores: ");
+                            string HistorialGanadores = File.ReadAllText(rutaArchivoGanadores);
+                            System.Console.WriteLine($"{HistorialGanadores.Replace(';',' ')}");
+                        }
+                        break;
+                    default:
+                        System.Console.WriteLine("Opcion no valida!");
+                        break;
+                }
+            }while(opcionPrincipal!=3);  
         }
 
         static Personaje Pelear(List<Personaje> L)

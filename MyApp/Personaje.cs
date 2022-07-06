@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net;
+using System.Text.Json;
 
 namespace RPG
 {
@@ -26,11 +28,9 @@ namespace RPG
         public void CrearPjAleatorio()
         {
             int selector;
-            string [] N = new string[6] {"Luke","Joshep","Patrick","Natalie","Caroline","Mikel"};
-            string [] A = new string[6] {"Gordon","Young","Falcon","Barrios","Philips","Filmus"};
             string [] apodo = new string[9] {"Alpha","Locus","Fear","Seth","Isceradin","Grin","Razor","Slade","Dark"};
             Random rnd = new Random();
-            Datos.Nombre = N[rnd.Next(0,N.Count())] + " " + A[rnd.Next(0,A.Count())];
+            NombreAleatorio();
             Datos.Apodo = apodo[rnd.Next(0,apodo.Count())];
             Datos.Salud=5000;
             Datos.FechaDeNacimiento = new DateTime(rnd.Next(Datos.FechaPelea1.Year-299,Datos.FechaPelea1.Year),rnd.Next(1,13),rnd.Next(1,30));
@@ -79,6 +79,30 @@ namespace RPG
                 default:
                     break;
             }  
+        }
+
+        public void NombreAleatorio()
+        {
+            var url = "https://random-names-api.herokuapp.com/random";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method="GET";
+            request.ContentType = "aplication/json";
+            request.Accept = "aplication/json";
+            try
+            {
+                WebResponse response = request.GetResponse();
+                Stream strReader = response.GetResponseStream();
+                if(strReader == null)return;
+                StreamReader objReader = new StreamReader(strReader);
+                string responseBody = objReader.ReadToEnd();
+                NombreRand myDeserializedClass = JsonSerializer.Deserialize<NombreRand>(responseBody);
+                Datos.Nombre=myDeserializedClass.Body.Name;
+            }
+            catch (System.Exception)
+            {
+                System.Console.WriteLine("Error");
+                throw;
+            }
         }
     }
 }

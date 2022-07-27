@@ -95,7 +95,7 @@ namespace RPG
                         Ganador=Pelear(ListaPj);
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         System.Console.WriteLine("\n\tGanador del trono de Hierro:");
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         describirPj(Ganador);
                         Console.ForegroundColor = ConsoleColor.White; 
                         if(!File.Exists(rutaArchivoGanadores))
@@ -243,25 +243,25 @@ namespace RPG
                     {
                         case 6:
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            System.Console.WriteLine($"\n\tGanador Cuartos de final 1:");
+                            System.Console.WriteLine($"\n\tGanador Ronda 1:");
                             Console.ForegroundColor = ConsoleColor.White;
                             describirPj(P1);
                             break;
                         case 5:
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            System.Console.WriteLine("\n\tGanador Cuartos de final 2:");
+                            System.Console.WriteLine("\n\tGanador Ronda 2:");
                             Console.ForegroundColor = ConsoleColor.White;
                             describirPj(P1);
                             break;
                         case 4:
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            System.Console.WriteLine("\n\tGanador Semifinal 1:");
+                            System.Console.WriteLine("\n\tGanador Ronda 3:");
                             Console.ForegroundColor = ConsoleColor.White;
                             describirPj(P1);
                             break;
                         case 3:
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            System.Console.WriteLine("\n\tGanador Semifinal 2:");
+                            System.Console.WriteLine("\n\tGanador Ronda 4:");
                             Console.ForegroundColor = ConsoleColor.White;
                             describirPj(P1);
                             break;
@@ -295,25 +295,25 @@ namespace RPG
                             {
                                 case 6:
                                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                    System.Console.WriteLine($"\n\tGanador Cuartos de final 1:");
+                                    System.Console.WriteLine($"\n\tGanador Ronda 1:");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     describirPj(P2);
                                     break;
                                 case 5:
                                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                    System.Console.WriteLine("\n\tGandor Cuartos de final 2:");
+                                    System.Console.WriteLine("\n\tGanador Ronda 2:");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     describirPj(P2);
                                     break;
                                 case 4:
                                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                    System.Console.WriteLine("\n\tGanador Semifinal 1:");
+                                    System.Console.WriteLine("\n\tGanador Ronda 3:");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     describirPj(P2);
                                     break;
                                 case 3:
                                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                    System.Console.WriteLine("\n\tGanador Semifinal 2:");
+                                    System.Console.WriteLine("\n\tGanador Ronda 4:");
                                     Console.ForegroundColor = ConsoleColor.White;
                                     describirPj(P2);
                                     break;

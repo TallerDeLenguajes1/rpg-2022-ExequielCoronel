@@ -68,7 +68,7 @@ namespace RPG
                         opcion=Convert.ToInt32(control);
                         if(opcion == 1)
                         {
-                            for(int i=0;i<16;i++)
+                            for(int i=0;i<6;i++)
                             {
                                 Personaje P = new Personaje();
                                 P.CrearPjAleatorio();
@@ -92,6 +92,7 @@ namespace RPG
                                     string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
                                     ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);     
                                 }
+                        MostrarPeleadores(ListaPj);
                         Ganador=Pelear(ListaPj);
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         System.Console.WriteLine("\n\tGanador del trono de Hierro:");
@@ -159,6 +160,16 @@ namespace RPG
         }
 
         //FUNCIONES
+        static void MostrarPeleadores(List<Personaje> L)
+        {
+            int i=1;
+            foreach (var PJ in L)
+            {
+                System.Console.WriteLine($"Personaje {i}:");
+                describirPj(PJ);
+                i++;
+            }
+        }
         static Personaje Pelear(List<Personaje> L)
         {
             const int MAXDAÑOPROVOCABLE = 50000;
@@ -336,7 +347,7 @@ namespace RPG
         static void describirPj(Personaje P)
         {
             Thread.Sleep(2000);
-            Console.WriteLine($" Nombre: {P.Datos.Nombre} \nApodo: {P.Datos.Apodo} \n Fecha de Nacimiento: {P.Datos.FechaDeNacimiento.ToString("dd/MM/yyy")} \n Edad: {P.Datos.edad()} \n Salud: {P.Datos.Salud} \n Tipo: {P.Datos.Tipo} \n Armadura: {P.Caracteristicas.Armadura} \n Destreza: {P.Caracteristicas.Destreza} \n Fuerza: {P.Caracteristicas.Fuerza} \n Velocidad: {P.Caracteristicas.Velocidad}");
+            Console.WriteLine($" Nombre: {P.Datos.Nombre} \n Apodo: {P.Datos.Apodo} \n Fecha de Nacimiento: {P.Datos.FechaDeNacimiento.ToString("dd/MM/yyy")} \n Edad: {P.Datos.edad()} \n Salud: {P.Datos.Salud} \n Tipo: {P.Datos.Tipo} \n Armadura: {P.Caracteristicas.Armadura} \n Destreza: {P.Caracteristicas.Destreza} \n Fuerza: {P.Caracteristicas.Fuerza} \n Velocidad: {P.Caracteristicas.Velocidad}");
         }
 
     }

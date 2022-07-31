@@ -100,9 +100,28 @@ namespace RPG
             }
             catch 
             {
-                Random rnd = new Random();
-                string [] nombre = new string[9] {"Ismael","Lucas","Sofia","Marcos","Brian","Olivia","Martha","Luis","Pedro"};
-                Datos.Nombre = nombre[rnd.Next(0,nombre.Count())];
+                url = "https://random-data-api.com/api/users/random_user";
+                var request2 = (HttpWebRequest)WebRequest.Create(url);
+                request2.Method="GET";
+                request2.ContentType = "aplication/json";
+                request2.Accept = "aplication/json";
+                try
+                {
+                    WebResponse response2 = request2.GetResponse();
+                    Stream strReader2 = response2.GetResponseStream();
+                    if(strReader2 == null)return;
+                    StreamReader objReader2 = new StreamReader(strReader2);
+                    string responseBody2 = objReader2.ReadToEnd();
+                    Root myDeserializedClass2 = JsonSerializer.Deserialize<Root>(responseBody2);
+                    Datos.Nombre = myDeserializedClass2.FirstName + ' ' + myDeserializedClass2.LastName;
+                }
+                catch
+                {
+                    Random rnd = new Random();
+                    string [] nombre = new string[9] {"Ismael","Lucas","Sofia","Marcos","Brian","Olivia","Martha","Luis","Pedro"};
+                    Datos.Nombre = nombre[rnd.Next(0,nombre.Count())];
+                }
+                
             }
         }
     }

@@ -158,6 +158,7 @@ namespace RPG
             }while(opcionPrincipal!=-1);  
         }
 
+        //FUNCIONES
         static Personaje Pelear(List<Personaje> L)
         {
             const int MAXDAÑOPROVOCABLE = 50000;

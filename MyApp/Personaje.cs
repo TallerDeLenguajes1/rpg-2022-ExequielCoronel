@@ -45,9 +45,9 @@ namespace RPG
                     Caracteristicas.Velocidad = 30 - (Caracteristicas.Fuerza+Caracteristicas.Armadura+caracteristicas.Destreza);
                     if(Caracteristicas.Velocidad>10)
                     {
-                        Caracteristicas.Nivel = rnd.Next(1,51);
+                        Caracteristicas.Nivel = rnd.Next(1,5);
                     } else {
-                        Caracteristicas.Nivel = rnd.Next(20,101);
+                        Caracteristicas.Nivel = rnd.Next(2,10);
                     }
                     break;
                 case 2:
@@ -83,7 +83,7 @@ namespace RPG
 
         public void NombreAleatorio()
         {
-            var url = "https://random-names-api.herokuapp.com/random";
+            var url = "https://fakerapi.it/api/v1/persons?_quantity=1";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method="GET";
             request.ContentType = "aplication/json";
@@ -95,13 +95,14 @@ namespace RPG
                 if(strReader == null)return;
                 StreamReader objReader = new StreamReader(strReader);
                 string responseBody = objReader.ReadToEnd();
-                NombreRand myDeserializedClass = JsonSerializer.Deserialize<NombreRand>(responseBody);
-                Datos.Nombre=myDeserializedClass.Body.Name;
+                Root2 myDeserializedClass = JsonSerializer.Deserialize<Root2>(responseBody);
+                Datos.Nombre=myDeserializedClass.Data[0].Firstname + ' ' + myDeserializedClass.Data[0].Lastname;
             }
-            catch (System.Exception)
+            catch 
             {
-                System.Console.WriteLine("Error");
-                throw;
+                Random rnd = new Random();
+                string [] nombre = new string[9] {"Ismael","Lucas","Sofia","Marcos","Brian","Olivia","Martha","Luis","Pedro"};
+                Datos.Nombre = nombre[rnd.Next(0,nombre.Count())];
             }
         }
     }

@@ -18,6 +18,7 @@ namespace RPG
             string rutaArchivo = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\jugadores", extensionArchivo = ".Json", rutaArchivoGanadores = @"C:\Users\execo\Escritorio\Universidad\3ero\1erCuatrimestre\TallerDeLenguajes1\Practica\RPG\MyApp\Ganadores.csv";
             Personaje Ganador = new Personaje();
             List<Personaje> ListaPj = new List<Personaje>();
+            System.Console.WriteLine("\n\tBienvenido!, este juego consiste en dada una lista de 6 participantes, los mismos pelean hasta quedar solo uno con vida y ser el ganador del trono de hierro\n");
             //Bucle hasta que se decida salir del juego
             do{
                 System.Console.WriteLine("Seleccione una opción: 1-->Luchar, 2-->Mostar historial de ganadores, 3-->Vaciar el historial de ganadores, 0-->Salir del Juego");
@@ -87,6 +88,7 @@ namespace RPG
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         describirPj(Ganador);
                         Console.ForegroundColor = ConsoleColor.White; 
+                        //Si no existe el archivo csv bandera=1 para poner el encabezado del archivo al crearlo
                         if(!File.Exists(rutaArchivoGanadores))
                         {
                             banderaArchivoGanadoresCreado = 1;
@@ -94,7 +96,7 @@ namespace RPG
                         StreamWriter archivoW = File.AppendText(rutaArchivoGanadores);
                         if(banderaArchivoGanadoresCreado == 1)
                         {
-                            archivoW.WriteLine($"Nombre;Apodo;Tipo");
+                            archivoW.WriteLine($"Nombre;Apodo;Tipo");   //encabezado archivo csv
                         }
                         archivoW.WriteLine($"{Ganador.Datos.Nombre};{Ganador.Datos.Apodo};{Ganador.Datos.Tipo}");
                         archivoW.Close();

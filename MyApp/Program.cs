@@ -20,12 +20,12 @@ namespace RPG
             List<Personaje> ListaPj = new List<Personaje>();
             //Bucle hasta que se decida salir del juego
             do{
-                System.Console.WriteLine("Seleccione una opción: 1-->Luchar, 2-->Mostar historial de ganadores, 3-->Borrar el historial de ganadores, 0-->Salir del Juego");
-                do{
+                System.Console.WriteLine("Seleccione una opción: 1-->Luchar, 2-->Mostar historial de ganadores, 3-->Vaciar el historial de ganadores, 0-->Salir del Juego");
+                do{ //Bucle hasta que se seleccione una opcion valida
                     control = Console.ReadLine();
                     if(control!="0" && control!="1" && control!="2" && control!="3")
                     {
-                        System.Console.WriteLine("\nPor favor seleccion una opcion valida!\n1-->Luchar, 2-->Mostar historial de ganadores, 3-->Borrar el historial de ganadores, 0-->Salir del Juego");
+                        System.Console.WriteLine("\nPor favor seleccion una opcion valida!\n1-->Luchar, 2-->Mostar historial de ganadores, 3-->Vaciar el historial de ganadores, 0-->Salir del Juego");
                     }
                 }while(control!="0" && control!="1" && control!="2" && control!="3");
                 opcionPrincipal=Convert.ToInt32(control);
@@ -34,68 +34,56 @@ namespace RPG
                     //Opcion salir del juego se muestra por pantalla 
                     case 0:
                         int confirmar;
+                        System.Console.WriteLine("\nEsta seguro que desea salir del juego? 1-->Si, 0-->No: ");
                         do{
-                            System.Console.WriteLine("\nEsta seguro que desea salir del juego? 1-->Si, 0-->No: ");
-                            do{
-                                control = Console.ReadLine();
-                                if(control!="1" && control!="0")
-                                {
-                                    System.Console.WriteLine("\n Por favor seleccion una opcion valida!\nEsta seguro que desea salir del juego? 1-->Si, 0-->No: ");
-                                }
-                            }while(control!="1" && control!="0");
-                            confirmar = Convert.ToInt32(control);
-                            if(confirmar==1)
+                            control = Console.ReadLine();
+                            if(control!="1" && control!="0")
                             {
-                                System.Console.WriteLine("\nEsperamos que regreses pronto!\n");
-                                opcionPrincipal = -1;
-                            } else if(confirmar!=0)
-                                    {
-                                        System.Console.WriteLine("\nPor favor seleccione una opción valida!\n");
-                                    }
-                        }while(confirmar != 0 && confirmar !=1);
+                                System.Console.WriteLine("\n Por favor seleccion una opcion valida!\nEsta seguro que desea salir del juego? 1-->Si, 0-->No: ");
+                            }
+                        }while(control!="1" && control!="0");
+                        confirmar = Convert.ToInt32(control);
+                        if(confirmar==1)
+                        {
+                            System.Console.WriteLine("\nEsperamos que regreses pronto!\n");
+                            opcionPrincipal = -1;
+                        }
                         break;
+                    //Opcion  Luchar, carga los personajes en una lista y los mismos pelean hasta quedar solo 1
                     case 1: 
                         do{
-                            System.Console.WriteLine($"\n Cargado de personajes, 1-->Automaticamente, 0-->Archivo Json:");
+                            System.Console.WriteLine($"\n Cargado de personajes, 1-->Aleatoriamente, 0-->Archivo Json:");
                             control = Console.ReadLine();
                             if(control != "1" && control != "0")
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;
-                                System.Console.WriteLine($"\n Porfavor ingrese una opcion valida! 1-->Automaticamente, 0-->Archivo Json: \n");
+                                System.Console.WriteLine($"\n Porfavor ingrese una opcion valida! 1-->Aleatoriamente, 0-->Archivo Json: \n");
                                 Console.ForegroundColor = ConsoleColor.White;
                             }
                         }while(control != "1" && control != "0");
                         opcion=Convert.ToInt32(control);
                         if(opcion == 1)
                         {
-                            for(int i=0;i<6;i++)
-                            {
-                                Personaje P = new Personaje();
-                                P.CrearPjAleatorio();
-                                ListaPj.Add(P); 
-                            }
+                            ListaPj=CargarPersonajesAleatorios();
                             File.WriteAllText(rutaArchivo+extensionArchivo,JsonSerializer.Serialize(ListaPj));
                         } else if(opcion==0)
                                 {
-                                    do
+                                    if(!File.Exists(rutaArchivo+extensionArchivo))
                                     {
-                                        System.Console.WriteLine("\nPresione cualquier tecla para comprobar si el archivo Json esta correctamente creado");
-                                        Console.ReadLine();
-                                        if(!File.Exists(rutaArchivo+extensionArchivo))
-                                        {
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            System.Console.WriteLine($"\nEl archivo con los personajes no esta creado o no se encuentra en la ruta necesaria por favor cree el mismo en {rutaArchivo+extensionArchivo} gracias!\n");
-                                            Console.ForegroundColor = ConsoleColor.White;
-                                            return;
-                                        }
-                                    }while(!File.Exists(rutaArchivo+extensionArchivo));
-                                    string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
-                                    ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);     
+                                        Console.ForegroundColor = ConsoleColor.Red;
+                                        System.Console.WriteLine($"\nEl archivo con los personajes no esta creado o no se encuentra en la ruta necesaria, se cargaran los personajes de manera aleatoria!\n");
+                                        Console.ForegroundColor = ConsoleColor.White;
+                                        ListaPj = CargarPersonajesAleatorios();
+                                        File.WriteAllText(rutaArchivo+extensionArchivo,JsonSerializer.Serialize(ListaPj));
+                                    } else {
+                                        string Json = File.ReadAllText(rutaArchivo+extensionArchivo);
+                                        ListaPj = JsonSerializer.Deserialize<List<Personaje>>(Json);  
+                                    }     
                                 }
                         MostrarPeleadores(ListaPj);
                         Ganador=Pelear(ListaPj);
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        System.Console.WriteLine("\n\tGanador del trono de Hierro:");
+                        System.Console.WriteLine("\nGanador del trono de Hierro:");
                         Console.ForegroundColor = ConsoleColor.DarkYellow;
                         describirPj(Ganador);
                         Console.ForegroundColor = ConsoleColor.White; 
@@ -115,11 +103,11 @@ namespace RPG
                     case 2:
                         if(!File.Exists(rutaArchivoGanadores))
                         {
-                            System.Console.WriteLine("El historial de ganadores esta vacio");
+                            System.Console.WriteLine("\n\tEl historial de ganadores esta vacio\n");
                         } else {
-                            System.Console.WriteLine("Historial de ganadores: ");
+                            System.Console.WriteLine("\n\tHistorial de ganadores: \n- - - - - - - - - - - - - - - -");
                             string HistorialGanadores = File.ReadAllText(rutaArchivoGanadores);
-                            System.Console.WriteLine($"{HistorialGanadores.Replace(';',' ')}");
+                            System.Console.WriteLine($"{HistorialGanadores.Replace(';',' ')}- - - - - - - - - - - - - - - -");
                         }
                         break;
                     case 3:
@@ -127,7 +115,7 @@ namespace RPG
                         {
                             System.Console.WriteLine("\nEl historial de ganadores esta vacio\n");
                         } else {
-                            System.Console.WriteLine("Esta Seguro de eliminar el historial de ganadores? 1-->Si, 0-->No: ");
+                            System.Console.WriteLine("Esta Seguro de vaciar el historial de ganadores? 1-->Si, 0-->No: ");
                             do
                             {
                                 control = Console.ReadLine();
@@ -142,7 +130,7 @@ namespace RPG
                             if(confirmar == 1)
                             {
                                 File.Delete(rutaArchivoGanadores);
-                                System.Console.WriteLine("\nSe a borrado exitosamente el historial de ganadores!\n");
+                                System.Console.WriteLine("\nSe vacio correctamente el historial de ganadores!\n");
                             } 
                         }
                         break;
@@ -160,12 +148,24 @@ namespace RPG
         }
 
         //FUNCIONES
+
+        static List<Personaje> CargarPersonajesAleatorios()
+        {
+            List<Personaje> ListadoPJ = new List<Personaje>();
+            for(int i=0;i<6;i++)
+            {
+                Personaje P = new Personaje();
+                P.CrearPjAleatorio();
+                ListadoPJ.Add(P);
+            }
+            return ListadoPJ;
+        }
         static void MostrarPeleadores(List<Personaje> L)
         {
             int i=1;
             foreach (var PJ in L)
             {
-                System.Console.WriteLine($"Personaje {i}:");
+                System.Console.WriteLine($"\n\tPersonaje {i}:");
                 describirPj(PJ);
                 i++;
             }
@@ -346,8 +346,10 @@ namespace RPG
 
         static void describirPj(Personaje P)
         {
+            System.Console.WriteLine("--------------------------------");
             Thread.Sleep(2000);
             Console.WriteLine($" Nombre: {P.Datos.Nombre} \n Apodo: {P.Datos.Apodo} \n Fecha de Nacimiento: {P.Datos.FechaDeNacimiento.ToString("dd/MM/yyy")} \n Edad: {P.Datos.edad()} \n Salud: {P.Datos.Salud} \n Tipo: {P.Datos.Tipo} \n Armadura: {P.Caracteristicas.Armadura} \n Destreza: {P.Caracteristicas.Destreza} \n Fuerza: {P.Caracteristicas.Fuerza} \n Velocidad: {P.Caracteristicas.Velocidad}");
+            System.Console.WriteLine("--------------------------------");
         }
 
     }

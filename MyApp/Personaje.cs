@@ -39,9 +39,9 @@ namespace RPG
             {
                 case 1:
                     Datos.Tipo=Tipo.cazador;
-                    Caracteristicas.Fuerza = rnd.Next(2,5);
-                    Caracteristicas.Armadura = rnd.Next(3,7);
-                    Caracteristicas.Destreza = rnd.Next(5,8);
+                    Caracteristicas.Fuerza = rnd.Next(3,6);
+                    Caracteristicas.Armadura = rnd.Next(3,6);
+                    Caracteristicas.Destreza = rnd.Next(5,11);
                     Caracteristicas.Velocidad = 30 - (Caracteristicas.Fuerza+Caracteristicas.Armadura+caracteristicas.Destreza);
                     if(Caracteristicas.Velocidad>10)
                     {
@@ -52,9 +52,9 @@ namespace RPG
                     break;
                 case 2:
                     Datos.Tipo=Tipo.hechizero;
-                    Caracteristicas.Armadura = rnd.Next(3,8);
-                    Caracteristicas.Fuerza = rnd.Next(3,8);
-                    Caracteristicas.Velocidad = rnd.Next(3,8);
+                    Caracteristicas.Armadura = rnd.Next(5,10);
+                    Caracteristicas.Fuerza = rnd.Next(4,10);
+                    Caracteristicas.Velocidad = rnd.Next(5,10);
                     Caracteristicas.Destreza = 30 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Fuerza);
                     if(Caracteristicas.Destreza>10)
                     {
@@ -66,8 +66,8 @@ namespace RPG
                 case 3:
                     Datos.Tipo=Tipo.titan;
                     Caracteristicas.Destreza = rnd.Next(1,5);
-                    Caracteristicas.Velocidad = rnd.Next(5,5);
-                    Caracteristicas.Armadura = rnd.Next(3,9);
+                    Caracteristicas.Velocidad = rnd.Next(1,5);
+                    Caracteristicas.Armadura = rnd.Next(6,11);
                     Caracteristicas.Fuerza = 30 - (Caracteristicas.Velocidad+Caracteristicas.Armadura+caracteristicas.Destreza);
                     if(Caracteristicas.Fuerza>10)
                     {

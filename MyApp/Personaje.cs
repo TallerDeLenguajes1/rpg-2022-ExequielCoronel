@@ -39,8 +39,8 @@ namespace RPG
             {
                 case 1:
                     Datos.Tipo=Tipo.cazador;
-                    Caracteristicas.Fuerza = rnd.Next(3,6);
-                    Caracteristicas.Armadura = rnd.Next(3,6);
+                    Caracteristicas.Fuerza = rnd.Next(3,7);
+                    Caracteristicas.Armadura = rnd.Next(3,7);
                     Caracteristicas.Destreza = rnd.Next(5,11);
                     Caracteristicas.Velocidad = 30 - (Caracteristicas.Fuerza+Caracteristicas.Armadura+caracteristicas.Destreza);
                     if(Caracteristicas.Velocidad>10)

@@ -107,7 +107,7 @@ namespace RPG
                         } else {
                             System.Console.WriteLine("\n\tHistorial de ganadores: \n- - - - - - - - - - - - - - - -");
                             string HistorialGanadores = File.ReadAllText(rutaArchivoGanadores);
-                            System.Console.WriteLine($"{HistorialGanadores.Replace(';',' ')}- - - - - - - - - - - - - - - -");
+                            System.Console.WriteLine($"{HistorialGanadores.Replace(';','-')}\n- - - - - - - - - - - - - - - -");
                         }
                         break;
                     case 3:
